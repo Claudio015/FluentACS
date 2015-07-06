@@ -30,8 +30,8 @@ namespace FluentACS.Commands
                 this.LogSavingChangesMessage(logAction);
             }
 
-            this.LogMessage(logAction, string.Format("Adding Service Identity '{0}'", this.serviceIdentityWithX509Spec.Name()));
-            acsWrapper.AddServiceIdentityWithCertificate(this.serviceIdentityWithX509Spec.Name(), this.serviceIdentityWithX509Spec.Certificates());
+            this.LogMessage(logAction, string.Format("Adding Service Identity '{0}' ('{1}')", this.serviceIdentityWithX509Spec.Name(), this.serviceIdentityWithX509Spec.Description()));
+            acsWrapper.AddServiceIdentityWithCertificate(this.serviceIdentityWithX509Spec.Name(), this.serviceIdentityWithX509Spec.Description(), this.serviceIdentityWithX509Spec.Certificates());
             this.LogSavingChangesMessage(logAction);
         }
     }

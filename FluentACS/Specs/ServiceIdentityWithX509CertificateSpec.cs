@@ -8,6 +8,7 @@ namespace FluentACS.Specs
     public class ServiceIdentityWithX509CertificateSpec
     {
         private string name;
+        private string description;
 
         private List<X509Certificate2> certificates = new List<X509Certificate2>();
 
@@ -16,6 +17,14 @@ namespace FluentACS.Specs
             Guard.NotNullOrEmpty(() => name, name);
 
             this.name = name;
+            return this;
+        }
+
+        public ServiceIdentityWithX509CertificateSpec Description(string description)
+        {
+            Guard.NotNullOrEmpty(() => description, description);
+
+            this.description = description;
             return this;
         }
 
@@ -44,6 +53,11 @@ namespace FluentACS.Specs
         internal string Name()
         {
             return this.name;
+        }
+
+        internal string Description()
+        {
+            return this.description;
         }
 
         internal IEnumerable<X509Certificate2> Certificates()

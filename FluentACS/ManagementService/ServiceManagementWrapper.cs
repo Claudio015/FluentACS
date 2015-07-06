@@ -1086,19 +1086,20 @@ namespace FluentACS.ManagementService
             }
         }
 
-        public void AddServiceIdentityWithCertificate(string name, X509Certificate2 certificate)
+        public void AddServiceIdentityWithCertificate(string name, string description, X509Certificate2 certificate)
         {
-            AddServiceIdentityWithCertificate(name, new [] { certificate });
+            AddServiceIdentityWithCertificate(name, description, new [] { certificate });
         }
 
-        public void AddServiceIdentityWithCertificate(string name, IEnumerable<X509Certificate2> certificates)
+        public void AddServiceIdentityWithCertificate(string name, string description, IEnumerable<X509Certificate2> certificates)
         {
             try
             {
                 var client = CreateManagementServiceClient();
                 var serviceIdentity = new ServiceIdentity
                 {
-                    Name = name
+                    Name = name,
+                    Description = description
                 };
 
                 client.AddToServiceIdentities(serviceIdentity);

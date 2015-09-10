@@ -132,18 +132,21 @@
             foreach (var linkedRuleGroup in this.relyingPartySpec.LinkedRuleGroups())
             {
                 var @group = linkedRuleGroup;
-                var ruleGroup = client.RuleGroups.Where(rg => rg.Name.Equals(group)).Single();
+                var ruleGroups = client.RuleGroups.ToList<RuleGroup>();
 
-                var relyingParty = client.RelyingParties.Where(rp => rp.Name.Equals(this.relyingPartySpec.Name())).Single();
-
-                var relyingPartyRuleGroup = new RelyingPartyRuleGroup
+                foreach (var ruleGroup in ruleGroups.Where(rg => System.Text.RegularExpressions.Regex.IsMatch(rg.Name, group)))
                 {
-                    RuleGroupId = ruleGroup.Id,
-                    RelyingParty = relyingParty
-                };
+                    var relyingParty = client.RelyingParties.Where(rp => rp.Name.Equals(this.relyingPartySpec.Name())).Single();
 
-                this.LogMessage(logAction, string.Format("Linking Relying Party '{0}' to Rule Group '{1}'", this.relyingPartySpec.Name(), linkedRuleGroup));
-                client.AddRelatedObject(relyingParty, "RelyingPartyRuleGroups", relyingPartyRuleGroup);
+                    var relyingPartyRuleGroup = new RelyingPartyRuleGroup
+                    {
+                        RuleGroupId = ruleGroup.Id,
+                        RelyingParty = relyingParty
+                    };
+
+                    this.LogMessage(logAction, string.Format("Linking Relying Party '{0}' to Rule Group '{1}'", this.relyingPartySpec.Name(), ruleGroup.Name));
+                    client.AddRelatedObject(relyingParty, "RelyingPartyRuleGroups", relyingPartyRuleGroup);
+                }
             }
 
             if (this.relyingPartySpec.LinkedRuleGroups().Any())

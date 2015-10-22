@@ -132,7 +132,12 @@
             foreach (var linkedRuleGroup in this.relyingPartySpec.LinkedRuleGroups())
             {
                 var @group = linkedRuleGroup;
-                var ruleGroups = client.RuleGroups.ToList<RuleGroup>();
+                DataServiceCollection<RuleGroup> ruleGroups = new DataServiceCollection<RuleGroup>(client.RuleGroups);
+
+                while (ruleGroups.Continuation != null)
+                {
+                    ruleGroups.Load(client.Execute<RuleGroup>(ruleGroups.Continuation));
+                }
 
                 foreach (var ruleGroup in ruleGroups.Where(rg => System.Text.RegularExpressions.Regex.IsMatch(rg.Name, group)))
                 {
